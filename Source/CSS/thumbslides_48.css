@@ -1,0 +1,57 @@
+.album_list{display:none}
+ul.thumbs-list{
+	margin:0;
+	padding:0;
+	list-style-type:none;
+	z-index:50;
+	position:absolute;
+	left:0;
+	top:0;
+	padding:0;
+	line-height:48px;
+	background:#aaa;
+}
+	li.thumb{
+		float:left;
+		margin:0 2px;
+		width:48px;
+		height:48px;
+		overflow:hidden;
+		text-align:center;
+	}
+	
+	ul.thumbs-list li img{vertical-align:middle;}
+
+.list-container{
+	width:404px;
+	height:48px;
+	line-height:48px;
+	overflow:hidden;
+	position:relative;
+	margin:0 auto;
+	vertical-align:middle;
+}
+	.subcontainer{
+		z-index:50;
+		width:364px;
+		float:left;
+		overflow:hidden;
+		height:48px;
+		position:relative
+	}
+	
+	.list-container button{
+		z-index:100;
+		width:20px;
+		height:48px;
+		background:url('buttons.png');
+		border:0;
+	}
+	.list-container .rightButton{
+		float:left;background-position:-20px 0;
+	}
+	.list-container .leftButton{
+		float:left;
+	}
+	
+	.list-container .disabled{visibility:hidden}
