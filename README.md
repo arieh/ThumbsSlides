@@ -16,6 +16,7 @@ In case you want to write up your own class, these are the must have classes:
   * leftButton : the 'previous' button
   
 The class can work in 2 different scenarios:
+
   * Generate the carusel from an image list
   * Generate the list from a json image li.
   
