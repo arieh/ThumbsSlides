@@ -164,7 +164,7 @@ var ThumbsSlides = new Class({
 		var self = this;
 		json.each(function(jsn){
 			var li = new Element('li', {'class': 'thumb'}),
-				a  = new Element('a',{href:jsn.source,'class':this.options.anchorClasses,title:jsn.description}),
+				a  = new Element('a',{href:jsn.source,'class':self.options.anchorClasses,title:jsn.description}),
 				img = new Element('img',{
 					src    : jsn.url,
 					width  : jsn.width,
