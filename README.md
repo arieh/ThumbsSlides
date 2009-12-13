@@ -8,12 +8,12 @@ How to use
 The class is very strict about its class. To make sure you use it correctly, i sudjest you use the CSS files that come with the library.
 In case you want to write up your own class, these are the must have classes:
 
-  * thumbs-list : the thumb's UL element
-  * thumbs : the thumb's LI element
-  * list-container : the list container element (the one that will contain the entire widget)
-  * subcontainer : the element that will parent the list itself - *This Element's width will be the carrusell's width - so set it!*
-  * rightButton : the 'next' button
-  * leftButton : the 'previous' button
+  * 'thumbs-list' : the thumb's UL element
+  * 'thumbs' : the thumb's LI element
+  * 'list-container' : the list container element (the one that will contain the entire widget)
+  * 'subcontainer' : the element that will parent the list itself - *This Element's width will be the carrusell's width - so set it!*
+  * 'rightButton' : the 'next' button
+  * 'leftButton' : the 'previous' button
   
 The class can work in 2 different scenarios:
 
