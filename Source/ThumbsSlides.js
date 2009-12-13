@@ -130,7 +130,7 @@ var ThumbsSlides = new Class({
 			subContainer = this.subContrainer;
 			
 		this.fx = new Fx.Tween(this.thumbsList);
-		this.fx.addEvent('complete',function(){self.ongoing=false;console.log('fx is done');});
+		this.fx.addEvent('complete',function(){self.ongoing=false;});
 		
 		rightButton.addEvent('click',function(){
 			self.next(self.options.movement);
@@ -181,7 +181,10 @@ var ThumbsSlides = new Class({
 		});
 	},
 	next : function(thumb_number){
-		if (this.ongoing) return;
+		if (this.ongoing){
+			console.log('tween is still running');
+			return;
+		}
 		
 		var self=this, 
 			width_dif = this.list_width % self.rowWidth + (self.options.thumbSize + self.liMargins),
