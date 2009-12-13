@@ -182,7 +182,6 @@ var ThumbsSlides = new Class({
 	},
 	next : function(thumb_number){
 		if (this.ongoing){
-			console.log('tween is still running');
 			return;
 		}
 		
