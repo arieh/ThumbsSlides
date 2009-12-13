@@ -130,7 +130,7 @@ var ThumbsSlides = new Class({
 			subContainer = this.subContrainer;
 			
 		this.fx = new Fx.Tween(this.thumbsList);
-		this.fx.addEvent('complete',function(){self.ongoing=false;});
+		this.fx.addEvent('complete',function(){self.ongoing=false;console.log('fx is done');});
 		
 		rightButton.addEvent('click',function(){
 			self.next(self.options.movement);
