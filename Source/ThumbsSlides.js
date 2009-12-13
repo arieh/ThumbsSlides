@@ -62,9 +62,11 @@ var ThumbsSlides = new Class({
 	leftButton : $empty,
 	buttonsSize : $empty,
 	containerSize : $empty,
+	ongoing : false,
 	last : false,
 	rowWidht : 0,
 	moving:false,
+	fx : $empty,
 	initialize : function(list,options){
 		this.setOptions(options);
 		this.setBox();
@@ -126,6 +128,9 @@ var ThumbsSlides = new Class({
 			rightButton = this.rightButton,
 			leftButton = this.leftButton,
 			subContainer = this.subContrainer;
+			
+		this.fx = new Fx.Tween(this.thumbsList);
+		this.fx.addEvent('complete',function(){self.ongoing=false;});
 		
 		rightButton.addEvent('click',function(){
 			self.next(self.options.movement);
@@ -176,6 +181,8 @@ var ThumbsSlides = new Class({
 		});
 	},
 	next : function(thumb_number){
+		if (this.ongoing) return;
+		
 		var self=this, 
 			width_dif = this.list_width % self.rowWidth + (self.options.thumbSize + self.liMargins),
 			left = self.thumbsList.getStyle('left').toInt(), 
@@ -188,9 +195,10 @@ var ThumbsSlides = new Class({
 				movement = size.x-this.rowWidth+left;
 			};
 		}
-
+		
 		if (left>-1*(size.x-self.rowWidth)){
-			self.thumbsList.tween('left',left-movement);
+			this.ongoing = true;
+			this.fx.start('left',left-movement);
 				
 			if (this.leftButton.get('disabled')) this.leftButton.removeClass('disabled').removeAttribute('disabled');
 			if (movement<self.rowWidth && !(thumb_number)){
@@ -200,6 +208,7 @@ var ThumbsSlides = new Class({
 		}
 	},
 	prev : function(thumb_number){
+		if (this.ongoing) return;
 		var self=this, 
 			width_dif = this.list_width % self.rowWidth + (self.options.thumbSize + self.liMargins)
 			left = self.thumbsList.getStyle('left').toInt(), 
@@ -214,7 +223,8 @@ var ThumbsSlides = new Class({
 		}
 
 		if (left<0){
-			self.thumbsList.tween('left',left+movement);
+			this.ongoing = true;
+			this.fx.start('left',left+movement);
 			
 			if (this.rightButton.get('disabled')) this.rightButton.removeClass('disabled').removeAttribute('disabled');
 			if (this.last) this.last = false;
