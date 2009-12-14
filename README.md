@@ -2,7 +2,7 @@ ThumbsSlides
 =============
 
 This class creates a thumbnail carusel slider out of a list of images. 
-![Screenshot](http://github.com/arieh/ThumbsSlides/raw/master/screenshot.png)
+![Screenshot](http://img130.imageshack.us/img130/2718/screenshottw.png)
 How to use
 ----------
 The class is very strict about its class. To make sure you use it correctly, i sudjest you use the CSS files that come with the library.
