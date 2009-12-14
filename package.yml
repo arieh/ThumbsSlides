@@ -1,6 +1,6 @@
-name: ThumbsSlides
+name:ThumbsSlides
 author: arieh
-category: Interface
+category:Interface
+tags:[menu,behavioral,utilities]
+demo:http://arieh.github.com/ThumbSlides/
 current:0.6
-tags: [menus, behavioral, utilities]
-demo: http://arieh.github.com/ThumbsSlides/
