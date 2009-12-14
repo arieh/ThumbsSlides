@@ -1,7 +1,6 @@
 name: ThumbsSlides
 author: arieh
 category: Interface
+current:0.6
 tags: [menus, behavioral, utilities]
 demo: http://arieh.github.com/ThumbsSlides/
-#docs: 
-current:0.6
