@@ -50,6 +50,7 @@ var AJAXThumbs = new Class({
 				self.options.start += self.options.movement;
 				if (self.done){
 					self.next(self.options.movement);
+					this.fireEvent('done');
 					return;
 				}
 				self.fireEvent('fetch');
