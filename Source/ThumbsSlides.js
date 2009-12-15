@@ -174,12 +174,13 @@ var ThumbsSlides = new Class({
 		json.each(function(jsn){
 			var li = new Element('li', {'class': 'thumb'}),
 				a  = new Element('a',{href:jsn.source,'class':self.options.anchorClasses,title:jsn.description}),
-				img = new Element('img',{
-					src    : jsn.url,
-					width  : jsn.width,
-					height : jsn.height,
-					alt    : jsn.description
-				});
+				attrs = {src : jsn.url, alt:jsn.description},
+				img;
+				
+				if (jsn.width) attrs.width = jsn.width;
+				if (jsn.height) attrs.height = jsn.height;
+				
+				img = new Element('img',attrs);
 			li.adopt(a.adopt(img));
 			self.thumbsList.adopt(li);
 		});
