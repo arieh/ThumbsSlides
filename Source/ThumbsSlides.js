@@ -94,6 +94,7 @@ var ThumbsSlides = new Class({
 		})
 		
 		this.rowWidth = this.subContainer.getSize().x.toInt();
+		
 		this.subContainer.setStyles({
 			'margin-left':old_margin
 		});
@@ -223,10 +224,14 @@ var ThumbsSlides = new Class({
 		
 		if (thumb_number){
 			movement = ((this.options.thumbSize + this.liMargins) * thumb_number);
+			console.log(left+movement);
 			if (left+movement>0){
 				movement = movement-(left+movement);
 			};
-		}
+		}else if(left+movement>0){
+			self.last = true;
+			movement = movement-(left+movement);
+		};
 
 		if (left<0){
 			this.ongoing = true;
