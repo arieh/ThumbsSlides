@@ -90,7 +90,7 @@ Options
  
   * url : a url for the request
   * paramName : a paramater name to send with the request containing the current loaded thumbs number (default : 'start')
-  * loadNumber : how many thumbs to lad on each request (default: if not supplied will assume same as 'movement')
+  * loadNumber : how many thumbs to lad on each request - must provide
   * start : how many thumbs to skip on the first request (will be added to loadNumber on first call. default: 0)
   * mehod : method for the request. default:'post'
   * requestEvents : events to send to the request
