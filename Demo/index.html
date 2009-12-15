@@ -17,7 +17,8 @@
 	h1{width:auto; font-size:3em;font-weight:bold;text-align:center}
 	h2{width:auto; font-size:1em;font-weight:bold;text-align:center}
 	h3{width:auto; text-align:center}
-	#loader {position:absolute; top:40%; width:100%; text-align:center; background-color:#abc; font-size:2em; display:none; z-index:1000}s
+	#loader {position:absolute; top:40%;left:0; width:100%; text-align:center; font-size:2em; display:none; z-index:1000}
+	#loader span{background-color:#abc; }
 	</style>
 </head>
 <body>
@@ -31,7 +32,7 @@
 <div id='no-ajax'></div>
 <h3>AJAXThumbs</h3>
 <div id='ajax'></div>
-<div id='loader'>Loading</div>
+<div id='loader'><span>Loading<span></div>
 	<script type="text/javascript" src="js/mootools-1.2.4-core.js"></script>
 	<script type='text/javascript' src='js/mootools-1.2.4.2-more.js'></script>
 	<script type="text/javascript" src="http://github.com/arieh/ThumbsSlides/raw/master/Source/ThumbsSlides.js"></script>
