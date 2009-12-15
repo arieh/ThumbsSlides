@@ -59,7 +59,7 @@ var AJAXThumbs = new Class({
 					onComplete : function(json){
 						if (json.length <1 || json.length == undefined){
 							self.done = true;
-							this.fireEvent('done');
+							self.fireEvent('done');
 							self.next(self.options.movement);							
 						}else self.insertNewThumbs(json);
 					}
