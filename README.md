@@ -3,7 +3,7 @@ ThumbsSlides
 
 This Library supplies 2 Class:
 
-  * ThumbsSlides : creates a thumbnail carusel slider out of a list of images. 
+  * ThumbsSlides : creates a thumbnail carousel slider out of a list of images. 
   * AJAXSlides : create the carousel using AJAX
  
 *NOTE* the demo page can't show the AJAX because of the static nature og GH-Pages. but you can see it using the downloadable demo
@@ -43,13 +43,13 @@ The JSON object should be structured like this:
 			source : '', //a source for the anchor
 			description : '', //a title for the anchor
 			src : '', //thumbnail source
-			width: 0, //thumbnail width
-			height: 0, //thumbnail height
+			width: 0, //thumbnail width - optional
+			height: 0, //thumbnail height - optional
 			alt: '' //an alt for the image
 		}
 	}
 
-To generagte the carusell from a list call it like this:
+To generagte the carousel from a list call it like this:
 
 	#JS
 	var slides = new ThumbsSlides($('image-list'),{/* options */});
@@ -68,10 +68,17 @@ There is also now an option to use an AJAX loader for this class like this:
 		movement : 7,
 		url:'get_thumbs.php',
 		start:14, //how many thumbs are already loaded
+		loadNumber : 7,
+		requestEvents : {
+			'request' : function(){console.log('started fetching');},
+			'success' : function(){console.log('images fetched');}
+		}
 	});
 
-Options
+Options 
 ---------
+*_ThumbsSlides_*:
+
   * thumbSize : the thumbnail size (default: 48)
   * parent : what element to append the list to (default to 'body')
   * movement : how many thumbs to slide with each movement (deafult is to list visible width)
@@ -79,12 +86,17 @@ Options
   * useItemClass : whether or not to use the itemClass to calculate list-items dimentions (false is very resource-expensive),
   * anchorClasses : what class to append to the anchr when generating from JSON (improtant if you want to incorparate with a smoothbox class)
 
+*_AJAXThumbs_*:
+ 
+  * url : a url for the request
+  * paramName : a paramater name to send with the request containing the current loaded thumbs number (default : 'start')
+  * loadNumber : how many thumbs to lad on each request (default: if not supplied will assume same as 'movement')
+  * start : how many thumbs to skip on the first request (will be added to loadNumber on first call. default: 0)
+  * mehod : method for the request. default:'post'
+  * requestEvents : events to send to the request
+
+
 Methods
 ---------
   * next(*int*) : move *int* tiles farward
   * prev(*int*) : move *int* tiles backwards
-  
-Events (for AJAXThumbs)
-----------
-  * 'fetch' : started fetching data from db
-  * 'done' : done fetching data. will start effect
