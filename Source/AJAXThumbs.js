@@ -25,14 +25,8 @@ provides: AJAXThumbs
 */
 var AJAXThumbs = new Class({
 	Extends : ThumbsSlides,
-	Implements : [Events,Options],
+	Implements : [Events],
 	options : {
-		thumbSize : 48,         //what is the thumbnail size
-		parent : $$('body')[0], //what is the list parent (default to body)
-		movement : false,       //how many tiles to move (deafult is to list visible width)
-		itemClass : 'thumb',    //what is the class of the list items 
-		useItemClass : true,     //whether or not to use the itemClass to calculate list-items dimentions (false is very resource-expensive),
-		anchorClasses : '', //class names to add to the anchors
 		url : '', //url for ajax calls
 		start : 0 //a start thumb number to send to the server-side script
 	},
