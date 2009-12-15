@@ -17,7 +17,7 @@ requires:
 - core: 1.2.4/Selectors
 - core: 1.2.4/Fx.Tween
 - core: 1.2.4/Request.JSON
-- ThumbsSlides: 0.7/ThumbsSlides
+- ThumbsSlides: 0.7.1/ThumbsSlides
 
 provides: AJAXThumbs
 
