@@ -28,14 +28,15 @@ var AJAXThumbs = new Class({
 	options : {
 		url : '', //url for ajax calls
 		start : 0, //a start thumb number to send to the server-side script
+		loadNumber : 0,
 		paramName : 'start', //a param name to use for sending start point
 		requestEvents : $empty,		//a list of events to set for the request
 		method : 'post' //a method to use for the request
 	},
 	done:false,
 	initialize: function(list,options){
-		var self = this;
 		this.parent(list,options);
+		if (this.options.loadNumber===0) this.options.loadNumber = this.options.movement;
 	},
 	setEvents : function(){
 		var self=this,
@@ -44,7 +45,7 @@ var AJAXThumbs = new Class({
 			subContainer = this.subContrainer,
 			getMoreThumbs = function(){
 				var params = {};
-				self.options.start += self.options.movement;
+				self.options.start += self.options.loadNumber;
 				params[self.options.paramName] = self.options.start;
 
 				if (self.done){
