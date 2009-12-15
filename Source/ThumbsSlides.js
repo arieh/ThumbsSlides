@@ -165,7 +165,6 @@ var ThumbsSlides = new Class({
 		if (temp) temp.destroy();
 		
 		this.list_width = lis.length * (self.options.thumbSize + self.liMargins ); 
-		//width_dif = this.list_width % self.rowWidth + (self.options.thumbSize + self.liMargins) ;//if the list width dosent exactly fit the container
 		
 		self.thumbsList.setStyle('width',this.list_width);
 	},
