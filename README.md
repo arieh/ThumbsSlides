@@ -35,7 +35,7 @@ If you use the image list, it needs to be structured like this:
 				
 The 'IMG' tag must have a width and a height applied.  
 
-The JSON object should be structured like this:
+The JSON object should be an Array and structured like this:
 
 	#JS
 	{
@@ -75,6 +75,13 @@ There is also now an option to use an AJAX loader for this class like this:
 		}
 	});
 
+The class will stop loading when recieving an empty object/array from the response. 	
+
+Methods
+---------
+  * next(*int*) : move *int* tiles farward
+  * prev(*int*) : move *int* tiles backwards
+
 Options 
 ---------
 *_ThumbsSlides_*:
@@ -84,19 +91,13 @@ Options
   * movement : how many thumbs to slide with each movement (deafult is to list visible width)
   * itemClass : the class of the list item (default: 'thumb')
   * useItemClass : whether or not to use the itemClass to calculate list-items dimentions (false is very resource-expensive),
-  * anchorClasses : what class to append to the anchr when generating from JSON (improtant if you want to incorparate with a smoothbox class)
+  * anchorClasses : what class to append to the anchr when generating from JSON (improtant if you want to incorparate with a lightbox class)
 
 *_AJAXThumbs_*:
  
-  * url : a url for the request
+  * url : a url for the request - Required
+  * loadNumber : how many thumbs to lad on each request - Required
   * paramName : a paramater name to send with the request containing the current loaded thumbs number (default : 'start')
-  * loadNumber : how many thumbs to lad on each request - must provide
   * start : how many thumbs to skip on the first request (will be added to loadNumber on first call. default: 0)
-  * mehod : method for the request. default:'post'
+  * mehod : method for the request. (default:'post')
   * requestEvents : events to send to the request
-
-
-Methods
----------
-  * next(*int*) : move *int* tiles farward
-  * prev(*int*) : move *int* tiles backwards
