@@ -2,6 +2,7 @@ ThumbsSlides
 =============
 
 This Library supplies 2 Class:
+
   * ThumbsSlides : creates a thumbnail carusel slider out of a list of images. 
   * AJAXSlides : create the carousel using AJAX
  
