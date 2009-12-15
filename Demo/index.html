@@ -36,7 +36,7 @@
 	<script type="text/javascript" src="js/mootools-1.2.4-core.js"></script>
 	<script type='text/javascript' src='js/mootools-1.2.4.2-more.js'></script>
 	<script type="text/javascript" src="http://github.com/arieh/ThumbsSlides/raw/master/Source/ThumbsSlides.js"></script>
-	<script type="text/javascript" src="http://github.com/arieh/ThumbsSlides/raw/master/Source/AJAXThumbs.js"></script>
+	<script type="text/javascript" src="../Source/AJAXThumbs.js"></script>
 	<script type="text/javascript" src="js/smoothbox.js"></script>
 	<script type="text/javascript">
 		document.addEvent('domready',function(){
@@ -69,11 +69,13 @@
 					url:'get_thumbs.php',
 					start:14,
 					movement : 7,
-					parent:$('ajax')
+					parent:$('ajax'),
+					requestEvents : {
+						'request' : function(){$('loader').setStyle('display','block')},
+						'success' : function(){$('loader').setStyle('display','none')}
+					}
 				}
 			);
-			ajslides.addEvent('fetch',function(){$('loader').setStyle('display','block')});
-			ajslides.addEvent('done',function(){$('loader').setStyle('display','none')});
 		})
 	</script>
 

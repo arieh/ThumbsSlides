@@ -25,10 +25,12 @@ provides: AJAXThumbs
 */
 var AJAXThumbs = new Class({
 	Extends : ThumbsSlides,
-	Implements : [Events],
 	options : {
 		url : '', //url for ajax calls
-		start : 0 //a start thumb number to send to the server-side script
+		start : 0, //a start thumb number to send to the server-side script
+		paramName : 'start', //a param name to use for sending start point
+		requestEvents : $empty,		//a list of events to set for the request
+		method : 'post' //a method to use for the request
 	},
 	done:false,
 	initialize: function(list,options){
@@ -41,23 +43,33 @@ var AJAXThumbs = new Class({
 			leftButton = this.leftButton,
 			subContainer = this.subContrainer,
 			getMoreThumbs = function(){
+				var params = {};
 				self.options.start += self.options.movement;
+				params[self.options.paramName] = self.options.start;
+
 				if (self.done){
 					self.next(self.options.movement);
 					return;
 				}
-				self.fireEvent('fetch');
+				
 				var req = new Request.JSON({
 					url : self.options.url,
-					data : {start : self.options.start},
+					data : params,
+					method : self.options.method,
 					onComplete : function(json){
 						if (json.length <1 || json.length == undefined){
-							self.done = true;
-							self.fireEvent('done');
-							self.next(self.options.movement);							
-						}else self.insertNewThumbs(json);
+							self.done = true;							
+						}else {
+							self.list_width += json.length * (self.options.thumbSize + self.liMargins ); 
+
+							self.thumbsList.setStyle('width',self.list_width);
+							
+							self.generateFromJSON(json);							
+						}
+						self.next(self.options.movement);
 					}
 				});
+				req.addEvents(self.options.requestEvents);
 				req.send();
 			}
 			
@@ -72,17 +84,5 @@ var AJAXThumbs = new Class({
 		});
 		
 		self.container.setStyle('visibility','visible');
-	},
-	insertNewThumbs : function(json){
-		var self=this;
-		
-
-		this.list_width += json.length * (this.options.thumbSize + this.liMargins ); 
-
-		this.thumbsList.setStyle('width',this.list_width);
-		
-		this.generateFromJSON(json);
-		this.fireEvent('done');
-		this.next(this.options.movement);
 	}
 });
