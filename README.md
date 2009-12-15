@@ -62,7 +62,7 @@ To generate from JSON use:
 There is also now an option to use an AJAX loader for this class like this:
 
     #JS
-	var slides = new ThumbsSlides({/* JSON object */},{
+	var slides = new AJAXThumbs({/* JSON object */},{
 		thumbSize:64,
 		useItemClass:true,
 		movement : 7,
