@@ -17,7 +17,7 @@ requires:
 - core: 1.2.4/Selectors
 - core: 1.2.4/Fx.Tween
 - core: 1.2.4/Request.JSON
-- ThumbsSlides: 0.7.1/ThumbsSlides
+- ThumbsSlides: 0.8.1/ThumbsSlides
 
 provides: AJAXThumbs
 
@@ -36,7 +36,7 @@ var AJAXThumbs = new Class({
 	done:false,
 	initialize: function(list,options){
 		this.parent(list,options);
-		if (this.options.loadNumber===0) this.options.loadNumber = this.options.movement;
+		if (this.options.loadNumber<=0) throw new Error("loadNumber must be provided");
 	},
 	setEvents : function(){
 		var self=this,
