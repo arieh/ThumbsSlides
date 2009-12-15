@@ -1,7 +1,12 @@
 ThumbsSlides
 =============
 
-This class creates a thumbnail carusel slider out of a list of images. 
+This Library supplies 2 Class:
+  * ThumbsSlides : creates a thumbnail carusel slider out of a list of images. 
+  * AJAXSlides : create the carousel using AJAX
+ 
+-NOTE- the demo page can't show the AJAX because of the static nature og GH-Pages. but you can see it using the downloadable demo
+
 ![Screenshot](http://img130.imageshack.us/img130/2718/screenshottw.png)
 How to use
 ----------
@@ -52,7 +57,18 @@ To generate from JSON use:
 	
 	#JS
 	var slides = new ThumbsSlides({/* JSON object */},{/* options */});
-	
+
+There is also now an option to use an AJAX loader for this class like this:
+
+    #JS
+	var slides = new ThumbsSlides({/* JSON object */},{
+		thumbSize:64,
+		useItemClass:true,
+		movement : 7,
+		url:'get_thumbs.php',
+		start:14, //how many thumbs are already loaded
+	});
+
 Options
 ---------
   * thumbSize : the thumbnail size (default: 48)
@@ -66,3 +82,8 @@ Methods
 ---------
   * next(*int*) : move *int* tiles farward
   * prev(*int*) : move *int* tiles backwards
+  
+Events (for AJAXThumbs)
+----------
+  * 'fetch' : started fetching data from db
+  * 'done' : done fetching data. will start effect
