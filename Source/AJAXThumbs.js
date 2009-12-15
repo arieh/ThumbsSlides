@@ -50,7 +50,6 @@ var AJAXThumbs = new Class({
 				self.options.start += self.options.movement;
 				if (self.done){
 					self.next(self.options.movement);
-					this.fireEvent('done');
 					return;
 				}
 				self.fireEvent('fetch');
@@ -60,7 +59,8 @@ var AJAXThumbs = new Class({
 					onComplete : function(json){
 						if (json.length <1 || json.length == undefined){
 							self.done = true;
-							self.next(self.options.movement);
+							this.fireEvent('done');
+							self.next(self.options.movement);							
 						}else self.insertNewThumbs(json);
 					}
 				});
