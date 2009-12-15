@@ -48,11 +48,11 @@ var ThumbsSlides = new Class({
 	listClass : ['thumbs-list'],
 	options : {
 		thumbSize : 48,         //what is the thumbnail size
-		parent : $$('body')[0], //what is the list parent (default to body)
+		parent : document.body, //what is the list parent (default to body)
 		movement : false,       //how many tiles to move (deafult is to list visible width)
 		itemClass : 'thumb',    //what is the class of the list items 
 		useItemClass : true,     //whether or not to use the itemClass to calculate list-items dimentions (false is very resource-expensive),
-		anchorClasses : ''
+		anchorClasses : '' //class name to add for the anchors
 	},
 	thumbsList :$empty,
 	liMargins : 4,
@@ -145,23 +145,27 @@ var ThumbsSlides = new Class({
 	setDimentions : function(){
 		var self = this,
 			lis = this.container.getElements(this.options.usetItemClass ? '.'+this.options.itemClass : 'li'),
+			temp = false,
 			clone;
 		if (this.options.useItemClass){
 			 clone = new Element('li',{'class':this.options.itemClass})
 			 clone.setStyle('left',-9999);
-			$$('body')[0].adopt(clone);
-			
+			 $$('body')[0].adopt(clone);
 		}else{
 			clone = this.container.clone();
 			clone.setStyle('left',-9999);
 			$$('body')[0].adopt(clone);
+			temp = clone;
 			clone = clone.getElement('li');
 		}
+		
 		self.liMargins = clone.getStyle('margin-right').toInt()+clone.getStyle('margin-left').toInt();
+		
 		clone.destroy();
+		if (temp) temp.destroy();
 		
 		this.list_width = lis.length * (self.options.thumbSize + self.liMargins ); 
-		width_dif = this.list_width % self.rowWidth + (self.options.thumbSize + self.liMargins) ;//if the list width dosent exactly fit the container
+		//width_dif = this.list_width % self.rowWidth + (self.options.thumbSize + self.liMargins) ;//if the list width dosent exactly fit the container
 		
 		self.thumbsList.setStyle('width',this.list_width);
 	},

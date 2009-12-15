@@ -9,6 +9,7 @@ ul.thumbs-list{
 	padding:0;
 	line-height:64px;
 	background:#aaa;
+	overflow:auto;
 }
 	li.thumb{
 		float:left;
