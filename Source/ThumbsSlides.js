@@ -82,16 +82,16 @@ var ThumbsSlides = new Class({
 		this.options.parent.adopt(this.container);
 	},
 	setBox : function(){		
-		this.subContainer = new Element('div',{'class':'subcontainer'}),
-		this.leftButton = new Element('button',{'class':'leftButton','disabled':'disabled'}),
-		this.rightButton = new Element('button',{'class':'rightButton'}),
+		this.subContainer = new Element('div',{'class':'subcontainer'});
+		this.leftButton = new Element('button',{'class':'leftButton','disabled':'disabled'});
+		this.rightButton = new Element('button',{'class':'rightButton'});
 		this.container = new Element('div',{'class':'list-container'});
 		$$('body')[0].adopt(this.subContainer);
 		var old_margin = this.subContainer.getStyle('margin-left');
 		
 		this.subContainer.setStyles({
 			'margin-left':-9999
-		})
+		});
 		
 		this.rowWidth = this.subContainer.getSize().x.toInt();
 		
@@ -112,7 +112,7 @@ var ThumbsSlides = new Class({
 			subContainer = this.subContainer;
 		
 		if (this.options.parent === $empty)
-			this.options.parent = this.list.getParent()
+			this.options.parent = this.list.getParent();
 		
 		lis.each(function(li){
 			var a = li.getElements('a')[0], 
@@ -149,7 +149,7 @@ var ThumbsSlides = new Class({
 			temp = false,
 			clone;
 		if (this.options.useItemClass){
-			 clone = new Element('li',{'class':this.options.itemClass})
+			 clone = new Element('li',{'class':this.options.itemClass});
 			 clone.setStyle('left',-9999);
 			 $$('body')[0].adopt(clone);
 		}else{
@@ -200,7 +200,7 @@ var ThumbsSlides = new Class({
 			movement = ((this.options.thumbSize + this.liMargins) * thumb_number);
 			if (left-movement<-1*size.x+this.rowWidth){
 				movement = size.x-this.rowWidth+left;
-			};
+			}
 		}
 		
 		if (left>-1*(size.x-self.rowWidth)){
@@ -217,7 +217,7 @@ var ThumbsSlides = new Class({
 	prev : function(thumb_number){
 		if (this.ongoing) return;
 		var self=this, 
-			width_dif = this.list_width % self.rowWidth + (self.options.thumbSize + self.liMargins)
+			width_dif = this.list_width % self.rowWidth + (self.options.thumbSize + self.liMargins),
 			left = self.thumbsList.getStyle('left').toInt(), 
 			size = self.thumbsList.getSize(),
 			movement = (self.last) ? self.rowWidth-width_dif : self.rowWidth;
@@ -227,11 +227,11 @@ var ThumbsSlides = new Class({
 			console.log(left+movement);
 			if (left+movement>0){
 				movement = movement-(left+movement);
-			};
+			}
 		}else if(left+movement>0){
 			self.last = true;
 			movement = movement-(left+movement);
-		};
+		}
 
 		if (left<0){
 			this.ongoing = true;
@@ -245,4 +245,4 @@ var ThumbsSlides = new Class({
 		}
 	},
 	toElement : function(){return this.container;}
-})
+});
