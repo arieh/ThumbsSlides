@@ -243,5 +243,6 @@ var ThumbsSlides = new Class({
 				this.set('disabled','disabled');
 			}
 		}
-	}
+	},
+	toElement : function(){return this.container;}
 })
