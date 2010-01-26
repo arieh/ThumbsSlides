@@ -31,11 +31,9 @@ var AJAXThumbs = new Class({
 	},
 	setEvents : function(){
 		var self=this,
-			rightButton = this.rightButton,
 			leftButton = this.leftButton,
-			subContainer = this.subContrainer,
 			getMoreThumbs = function(){
-				var params = {};
+				var params = {}, req;
 				self.options.start += self.options.loadNumber;
 				params[self.options.paramName] = self.options.start;
 
@@ -44,12 +42,12 @@ var AJAXThumbs = new Class({
 					return;
 				}
 				
-				var req = new Request.JSON({
+				req = new Request.JSON({
 					url : self.options.url,
 					data : params,
 					method : self.options.method,
 					onComplete : function(json){
-						if (json.length <1 || json.length == undefined){
+						if (json.length <1 || json.length === undefined){
 							self.done = true;							
 						}else {
 							self.list_width += json.length * (self.options.thumbSize + self.liMargins ); 
@@ -63,7 +61,7 @@ var AJAXThumbs = new Class({
 				});
 				req.addEvents(self.options.requestEvents);
 				req.send();
-			}
+			};
 			
 		
 		this.fx = new Fx.Tween(this.thumbsList);
