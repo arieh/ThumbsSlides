@@ -8,7 +8,7 @@ authors:
 - Arieh Glazer
 
 requires:
-- ThumbsSlides/0.8.1: ThumbsSlides
+- ThumbsSlides/0.8: ThumbsSlides
 
 provides: AJAXThumbs
 
