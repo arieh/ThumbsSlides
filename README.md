@@ -28,12 +28,17 @@ The class can work in 2 different scenarios:
   
 If you use the image list, it needs to be structured like this:
 
-	ul
-		li.thumb
-			a
-				img
-				
-The 'IMG' tag must have a width and a height applied.  
+*HTML* 
+	
+	#HTML
+	<ul>
+		<li class='thumb'>
+			<a href='#'>
+				<img src='some-image.png' height:'10px' width:'10px' /></a>
+		</li>
+	</ul>
+	
+_The 'IMG' tag must have a width and a height applied._  
 
 The JSON object should be an Array and structured like this:
 
