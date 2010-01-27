@@ -8,14 +8,7 @@ authors:
 - Arieh Glazer
 
 requires:
-- core/1.2.4: Class
-- core/1.2.4: Class.Extras
-- core/1.2.4: Element
-- core/1.2.4: Element.Event
-- core/1.2.4: Element.Style
-- core/1.2.4: Element.Dimensions
-- core/1.2.4: Selectors
-- core/1.2.4: Fx.Tween
+- core/1.2.4: [Class,Class.Extras,Element,Element.Event,Element.Style,Element.Dimensions,Selectors,Fx.Tween]
 
 provides: [ThumbsSlides]
 
