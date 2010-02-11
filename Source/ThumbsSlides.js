@@ -64,7 +64,7 @@ var ThumbsSlides = new Class({
 		this.setOptions(options);
 		this.setBox();
 		
-		if ($type($(list))=== 'element'){
+		if ($type( document.id(list))=== 'element'){
 			this.list=list;
 			this.generateBox();
 		}
@@ -217,7 +217,7 @@ var ThumbsSlides = new Class({
 		
 		if (thumb_number){
 			movement = ((this.options.thumbSize + this.liMargins) * thumb_number);
-			console.log(left+movement);
+			
 			if (left+movement>0){
 				movement = movement-(left+movement);
 			}
