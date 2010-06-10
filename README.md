@@ -97,7 +97,7 @@ Options
   * itemClass : the class of the list item (default: 'thumb')
   * useItemClass : whether or not to use the itemClass to calculate list-items dimentions (false is very resource-expensive),
   * anchorClasses : what class to append to the anchr when generating from JSON (improtant if you want to incorparate with a lightbox class)
-  * retl : whether to use a right-to-left version or not (defualt to false).
+  * rtl : whether to use a right-to-left version or not (defualt to false).
 
 *_AJAXThumbs_* cuurently not working properly :-(:
  
