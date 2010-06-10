@@ -46,8 +46,10 @@ var ThumbsSlides = new Class({
 		itemClass : 'thumb',    //what is the class of the list items 
 		useItemClass : true,     //whether or not to use the itemClass to calculate list-items dimentions (false is very resource-expensive),
 		anchorClasses : '' //class name to add for the anchors
+		,rtl :false
 	},
 	thumbsList :$empty,
+	dir : 'right',
 	liMargins : 4,
 	list_width : 0,
 	subContainer : $empty,
@@ -73,10 +75,11 @@ var ThumbsSlides = new Class({
 		this.setDimentions();
 		this.setEvents();
 		this.options.parent.adopt(this.container);
+		this.dir = this.options.rtl ? 'right' : 'left';
 	},
 	setBox : function(){		
 		this.subContainer = new Element('div',{'class':'subcontainer'});
-		this.leftButton = new Element('button',{'class':'leftButton','disabled':'disabled'});
+		this.leftButton = new Element('button',{'class':'leftButton'});
 		this.rightButton = new Element('button',{'class':'rightButton'});
 		this.container = new Element('div',{'class':'list-container'});
 		$$('body')[0].adopt(this.subContainer);
@@ -93,14 +96,14 @@ var ThumbsSlides = new Class({
 		});
 
 		this.container.adopt(this.leftButton,this.subContainer,this.rightButton).setStyle('visibility','hidden');
-		this.thumbsList = new Element('ul',{'class':this.listClass});
+		this.thumbsList = new Element('ul',{'class':this.listClass}).setStyle(this.dir,0);
 		this.buttonsSize = this.leftButton.getSize();
 		this.containerSize = this.container.getSize();
 		
 		this.subContainer.adopt(this.thumbsList);
 	},
 	generateBox : function(){
-		var self = this,
+		var $this = this,
 			lis = this.list.getElements('li'),
 			subContainer = this.subContainer;
 		
@@ -112,32 +115,32 @@ var ThumbsSlides = new Class({
 				img = a.getElements('img')[0],
 				targetImage = a.get('href'),
 				desc = img.get('alt');
-			self.thumbsList.adopt(li.adopt(a));
+			$this.thumbsList.adopt(li.adopt(a));
 		});
 
 		this.list.destroy();
 	},
 	setEvents : function(){
-		var self=this,
+		var $this=this,
 			rightButton = this.rightButton,
 			leftButton = this.leftButton,
 			subContainer = this.subContrainer;
 			
 		this.fx = new Fx.Tween(this.thumbsList);
-		this.fx.addEvent('complete',function(){self.ongoing=false;});
+		this.fx.addEvent('complete',function(){$this.ongoing=false;});
 		
 		rightButton.addEvent('click',function(){
-			self.next(self.options.movement);
+			$this[$this.options.rtl ? 'prev' : 'next']($this.options.movement);
 		});
 		
 		leftButton.addEvent('click',function(){
-			self.prev(self.options.movement);
+			$this[$this.options.rtl ? 'next' : 'prev']($this.options.movement);
 		});
 		
-		self.container.setStyle('visibility','visible');
+		$this.container.setStyle('visibility','visible');
 	},
 	setDimentions : function(){
-		var self = this,
+		var $this = this,
 			lis = this.container.getElements(this.options.usetItemClass ? '.'+this.options.itemClass : 'li'),
 			temp = false,
 			clone;
@@ -153,20 +156,23 @@ var ThumbsSlides = new Class({
 			clone = clone.getElement('li');
 		}
 		
-		self.liMargins = clone.getStyle('margin-right').toInt()+clone.getStyle('margin-left').toInt();
+		$this.liMargins = clone.getStyle('margin-right').toInt()+clone.getStyle('margin-left').toInt();
 		
 		clone.destroy();
 		if (temp) temp.destroy();
 		
-		this.list_width = lis.length * (self.options.thumbSize + self.liMargins ); 
+		this.list_width = lis.length * ($this.options.thumbSize + $this.liMargins ); 
 		
-		self.thumbsList.setStyle('width',this.list_width);
+		$this.thumbsList.setStyle('width',this.list_width);
+		if ( this.list_width <= this.subContainer.getStyle('width').toInt() ) this[(this.options.rtl ? 'left':'right') +'Button'].addClass('disabled').set('disabled','disabled');
+		
+		this[(this.options.rtl ? 'right':'left') +'Button'].addClass('disabled').set('disabled','disabled');
 	},
 	generateFromJSON : function(json){
-		var self = this;
+		var $this = this;
 		json.each(function(jsn){
 			var li = new Element('li', {'class': 'thumb'}),
-				a  = new Element('a',{href:jsn.source,'class':self.options.anchorClasses,title:jsn.description}),
+				a  = new Element('a',{href:jsn.source,'class':$this.options.anchorClasses,title:jsn.description}),
 				attrs = {src : jsn.url, alt:jsn.description},
 				img;
 				
@@ -175,7 +181,7 @@ var ThumbsSlides = new Class({
 				
 				img = new Element('img',attrs);
 			li.adopt(a.adopt(img));
-			self.thumbsList.adopt(li);
+			$this.thumbsList.adopt(li);
 		});
 	},
 	next : function(thumb_number){
@@ -183,57 +189,63 @@ var ThumbsSlides = new Class({
 			return;
 		}
 		
-		var self=this, 
-			width_dif = this.list_width % self.rowWidth + (self.options.thumbSize + self.liMargins),
-			left = self.thumbsList.getStyle('left').toInt(), 
-			size = self.thumbsList.getSize(),
-			movement = (left-this.rowWidth-width_dif<=-1*(size.x)) ? self.rowWidth - width_dif : self.rowWidth;
+		var $this=this, 
+			width_dif = this.list_width % $this.rowWidth + ($this.options.thumbSize + $this.liMargins),
+			dir = $this.thumbsList.getStyle(this.dir).toInt(), 
+			size = $this.thumbsList.getSize(),
+			movement = (dir-this.rowWidth-width_dif<=-1*(size.x)) ? $this.rowWidth - width_dif : $this.rowWidth
+			, prevButton = this.options.rtl ? this.rightButton : this.leftButton
+			, nextButton = this.options.rtl ? this.leftButton : this.rightButton;
 		
 		if (thumb_number){
 			movement = ((this.options.thumbSize + this.liMargins) * thumb_number);
-			if (left-movement<-1*size.x+this.rowWidth){
-				movement = size.x-this.rowWidth+left;
+			if (dir-movement<-1*size.x+this.rowWidth){
+				movement = size.x-this.rowWidth+dir;
 			}
 		}
 		
-		if (left>-1*(size.x-self.rowWidth)){
+		if (dir>-1*(size.x-$this.rowWidth)){
 			this.ongoing = true;
-			this.fx.start('left',left-movement);
+			this.fx.start(this.dir,dir-movement);
 				
-			if (this.leftButton.get('disabled')) this.leftButton.removeClass('disabled').removeAttribute('disabled');
-			if (movement<self.rowWidth && !(thumb_number)){
-				self.last = true;
-				this.rightButton.set('disabled','disabled');
+			if (prevButton.get('disabled')) prevButton.removeClass('disabled').removeAttribute('disabled');
+			
+			if (movement<$this.rowWidth && !(thumb_number)){
+				$this.last = true;
+				nextButton.set('disabled','disabled').addClass('disabled');
 			}
 		}
 	},
 	prev : function(thumb_number){
 		if (this.ongoing) return;
-		var self=this, 
-			width_dif = this.list_width % self.rowWidth + (self.options.thumbSize + self.liMargins),
-			left = self.thumbsList.getStyle('left').toInt(), 
-			size = self.thumbsList.getSize(),
-			movement = (self.last) ? self.rowWidth-width_dif : self.rowWidth;
+		var $this=this, 
+			width_dif = this.list_width % $this.rowWidth + ($this.options.thumbSize + $this.liMargins),
+			dir = $this.thumbsList.getStyle(this.dir).toInt(), 
+			size = $this.thumbsList.getSize(),
+			movement = ($this.last) ? $this.rowWidth-width_dif : $this.rowWidth
+			, prevButton = this.options.rtl ? this.rightButton : this.leftButton
+			, nextButton = this.options.rtl ? this.leftButton : this.rightButton;
 		
 		if (thumb_number){
 			movement = ((this.options.thumbSize + this.liMargins) * thumb_number);
 			
-			if (left+movement>0){
-				movement = movement-(left+movement);
+			if (dir+movement>0){
+				movement = movement-(dir+movement);
 			}
-		}else if(left+movement>0){
-			self.last = true;
-			movement = movement-(left+movement);
+		}else if(dir+movement>0){
+			$this.last = true;
+			movement = movement-(dir+movement);
 		}
 
-		if (left<0){
+		if (dir<0){
 			this.ongoing = true;
-			this.fx.start('left',left+movement);
+			this.fx.start(this.dir,dir+movement);
 			
-			if (this.rightButton.get('disabled')) this.rightButton.removeClass('disabled').removeAttribute('disabled');
+			if (nextButton.get('disabled')) nextButton.removeClass('disabled').removeAttribute('disabled');
 			if (this.last) this.last = false;
-			if (left==this.buttonsSize.x){
-				this.set('disabled','disabled');
+			
+			if (dir+movement==this.buttonsSize.x){
+				prevButton.set('disabled','disabled').addClass('disabled');
 			}
 		}
 	},
