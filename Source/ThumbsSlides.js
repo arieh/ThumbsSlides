@@ -64,6 +64,8 @@ var ThumbsSlides = new Class({
 	fx : $empty,
 	initialize : function(list,options){
 		this.setOptions(options);
+		this.dir = this.options.rtl ? 'right' : 'left';
+		
 		this.setBox();
 		
 		if ($type( document.id(list))=== 'element'){
@@ -75,7 +77,8 @@ var ThumbsSlides = new Class({
 		this.setDimentions();
 		this.setEvents();
 		this.options.parent.adopt(this.container);
-		this.dir = this.options.rtl ? 'right' : 'left';
+		
+		
 	},
 	setBox : function(){		
 		this.subContainer = new Element('div',{'class':'subcontainer'});
@@ -96,6 +99,7 @@ var ThumbsSlides = new Class({
 		});
 
 		this.container.adopt(this.leftButton,this.subContainer,this.rightButton).setStyle('visibility','hidden');
+
 		this.thumbsList = new Element('ul',{'class':this.listClass}).setStyle(this.dir,0);
 		this.buttonsSize = this.leftButton.getSize();
 		this.containerSize = this.container.getSize();
