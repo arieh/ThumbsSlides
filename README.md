@@ -4,7 +4,7 @@ ThumbsSlides
 This Library supplies 2 Class:
 
   * ThumbsSlides : creates a thumbnail carousel slider out of a list of images. 
-  * AJAXSlides : create the carousel using AJAX
+  * AJAXSlides : create the carousel using AJAX - currently not working properly
  
 *NOTE* the demo page can't show the AJAX because of the static nature og GH-Pages. but you can see it using the downloadable demo
 
