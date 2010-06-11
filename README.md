@@ -4,7 +4,7 @@ ThumbsSlides
 This Library supplies 2 Class:
 
   * ThumbsSlides : creates a thumbnail carousel slider out of a list of images. 
-  * AJAXSlides : create the carousel using AJAX - currently not working properly
+  * AJAXSlides : create the carousel using AJAX.
  
 *NOTE* the demo page can't show the AJAX because of the static nature of GH-Pages. but you can see it using the downloadable demo
 
@@ -99,7 +99,7 @@ Options
   * anchorClasses : what class to append to the anchr when generating from JSON (improtant if you want to incorparate with a lightbox class)
   * rtl : whether to use a right-to-left version or not (defualt to false).
 
-*_AJAXThumbs_* cuurently not working properly :-(:
+*_AJAXThumbs_*:
  
   * url : a url for the request - Required
   * loadNumber : how many thumbs to lad on each request - Required
@@ -107,3 +107,10 @@ Options
   * start : how many thumbs to skip on the first request (will be added to loadNumber on first call. default: 0)
   * mehod : method for the request. (default:'post')
   * requestEvents : events to send to the request
+
+Events
+-------
+
+ * complete : List was generated successfuly
+ * nextComplete: next effect finished
+ * prevComplete: prev effect finished
