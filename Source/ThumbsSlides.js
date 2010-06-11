@@ -35,8 +35,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE 
 */
-var ThumbsSlides = new Class({
-	Implements : Options,
+(function($){
+ThumbsSlides = new Class({
+	Implements : [Options, Events],
 	list : $empty,
 	listClass : ['thumbs-list'],
 	options : {
@@ -78,7 +79,7 @@ var ThumbsSlides = new Class({
 		this.setEvents();
 		this.options.parent.adopt(this.container);
 		
-		
+		this.fireEvent('complete');
 	},
 	setBox : function(){		
 		this.subContainer = new Element('div',{'class':'subcontainer'});
@@ -199,7 +200,11 @@ var ThumbsSlides = new Class({
 			size = $this.thumbsList.getSize(),
 			movement = (dir-this.rowWidth-width_dif<=-1*(size.x)) ? $this.rowWidth - width_dif : $this.rowWidth
 			, prevButton = this.options.rtl ? this.rightButton : this.leftButton
-			, nextButton = this.options.rtl ? this.leftButton : this.rightButton;
+			, nextButton = this.options.rtl ? this.leftButton : this.rightButton
+			, completeFunc = function(){				
+					$this.fireEvent('nextComplete');
+					$this.fx.removeEvent('complete',completeFunc);
+			};
 		
 		if (thumb_number){
 			movement = ((this.options.thumbSize + this.liMargins) * thumb_number);
@@ -210,6 +215,8 @@ var ThumbsSlides = new Class({
 		
 		if (dir>-1*(size.x-$this.rowWidth)){
 			this.ongoing = true;
+			
+			this.fx.addEvent('complete',completeFunc);
 			this.fx.start(this.dir,dir-movement);
 				
 			if (prevButton.get('disabled')) prevButton.removeClass('disabled').removeAttribute('disabled');
@@ -228,8 +235,12 @@ var ThumbsSlides = new Class({
 			size = $this.thumbsList.getSize(),
 			movement = ($this.last) ? $this.rowWidth-width_dif : $this.rowWidth
 			, prevButton = this.options.rtl ? this.rightButton : this.leftButton
-			, nextButton = this.options.rtl ? this.leftButton : this.rightButton;
-		
+			, nextButton = this.options.rtl ? this.leftButton : this.rightButton
+			, completeFunc = function(){				
+					$this.fireEvent('prevComplete');
+					$this.fx.removeEvent('complete',completeFunc);
+			};
+			
 		if (thumb_number){
 			movement = ((this.options.thumbSize + this.liMargins) * thumb_number);
 			
@@ -243,6 +254,8 @@ var ThumbsSlides = new Class({
 
 		if (dir<0){
 			this.ongoing = true;
+			
+			this.fx.addEvent('complete',completeFunc);
 			this.fx.start(this.dir,dir+movement);
 			
 			if (nextButton.get('disabled')) nextButton.removeClass('disabled').removeAttribute('disabled');
@@ -255,3 +268,4 @@ var ThumbsSlides = new Class({
 	},
 	toElement : function(){return this.container;}
 });
+}(document.id));

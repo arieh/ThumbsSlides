@@ -14,7 +14,8 @@ provides: AJAXThumbs
 
 ...
 */
-var AJAXThumbs = new Class({
+(function($){
+AJAXThumbs = new Class({
 	Extends : ThumbsSlides,
 	options : {
 		url : '', //url for ajax calls
@@ -76,3 +77,4 @@ var AJAXThumbs = new Class({
 		self.container.setStyle('visibility','visible');
 	}
 });
+}($));
