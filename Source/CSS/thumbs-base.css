@@ -21,8 +21,6 @@
         position:absolute;
     }
     
-    
-    
     .list-container .rightButton{
         background-position:-20px 0;
         right:0;
@@ -32,8 +30,6 @@
     }
     
     .list-container .disabled{visibility:hidden}
-    
-    li.thumb.current {background:#ff0;}
    
 ul.thumbs-list{
     margin:0;
@@ -43,7 +39,6 @@ ul.thumbs-list{
     position:absolute;
     top:0;
     padding:0;
-    background:#aaa;
     overflow:auto;
     vertical-align:top;
 }
@@ -56,7 +51,6 @@ ul.thumbs-list{
     
     
     ul.thumbs-list li img{vertical-align:top;}
-    
     
 ul.thumbs-list.rtl {direction:rtl}
 ul.thumbs-list.rtl li.thumb {float:right}
