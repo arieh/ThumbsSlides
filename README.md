@@ -11,11 +11,11 @@ This Library supplies 2 Class:
 ![Screenshot](http://img130.imageshack.us/img130/2718/screenshottw.png)
 How to use
 ----------
-The class is very strict about its class. To make sure you use it correctly, i sudjest you use the CSS files that come with the library.
+The class is very strict about its class. To make sure you use it correctly, i suggest you use the CSS files that come with the library.
 In case you want to write up your own class, these are the must have classes:
 
   * 'thumbs-list' : the thumb's UL element
-  * 'thumbs' : the thumb's LI element
+  * 'thumb' : the thumb's LI element
   * 'list-container' : the list container element (the one that will contain the entire widget)
   * 'subcontainer' : the element that will parent the list itself - *This Element's width will be the carrusell's width - so set it!*
   * 'rightButton' : the 'next' button
@@ -87,18 +87,22 @@ Methods
 ---------
   * next(*int*) : move *int* tiles farward
   * prev(*int*) : move *int* tiles backwards
+  * nextItem : move the current focus to the next item
+  * prevItem : move the current focus to the previous item
 
 Options 
 ---------
 *_ThumbsSlides_*:
 
-  * thumbSize : the thumbnail size (default: 48)
   * parent : what element to append the list to (default to 'body')
   * movement : how many thumbs to slide with each movement (deafult is to list visible width)
   * itemClass : the class of the list item (default: 'thumb')
   * useItemClass : whether or not to use the itemClass to calculate list-items dimentions (false is very resource-expensive),
   * anchorClasses : what class to append to the anchr when generating from JSON (improtant if you want to incorparate with a lightbox class)
   * rtl : whether to use a right-to-left version or not (defualt to false).
+  * listClass : a class to set for the thumbs-list (default to `thumbs-list`)
+  * itemsPerRow : how many items to show in the viewport
+  
 
 *_AJAXThumbs_*:
  
@@ -115,3 +119,8 @@ Events
  * complete : List was generated successfuly
  * nextComplete: next effect finished
  * prevComplete: prev effect finished
+ 
+CSS
+------
+The class comes with a base CSS file that you should always use - `thumbs-base.css`, and additional ones that set some basic dimensions for various thumbs sizes. 
+The basic style comes with a default buttons style, but you can overwrite it. Also, you can look at the demo css to see some further styling. 
