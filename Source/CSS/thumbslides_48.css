@@ -1,59 +1,7 @@
-.album_list{display:none}
-ul.thumbs-list{
-	margin:0;
-	padding:0;
-	list-style-type:none;
-	z-index:50;
-	position:absolute;
-	top:0;
-	padding:0;
-	line-height:48px;
-	background:#aaa;
+.list-container button{height:48px;}
+li.thumb {
+   margin:2px;
+   padding:2px;
+   width:48x;
+   height:48px;
 }
-	li.thumb{
-		float:left;
-		margin:0 2px;
-		width:48px;
-		height:48px;
-		overflow:hidden;
-		text-align:center;
-	}
-	
-	ul.thumbs-list li img{vertical-align:middle;}
-
-ul.thumbs-list.rtl {direction:rtl}
-ul.thumbs-list.rtl li.thumb {float:right}
-
-.list-container{
-	width:404px;
-	height:48px;
-	line-height:48px;
-	overflow:hidden;
-	position:relative;
-	margin:0 auto;
-	vertical-align:middle;
-}
-	.subcontainer{
-		z-index:50;
-		width:364px;
-		float:left;
-		overflow:hidden;
-		height:48px;
-		position:relative
-	}
-	
-	.list-container button{
-		z-index:100;
-		width:20px;
-		height:48px;
-		background:url('buttons.png');
-		border:0;
-	}
-	.list-container .rightButton{
-		float:left;background-position:-20px 0;
-	}
-	.list-container .leftButton{
-		float:left;
-	}
-	
-	.list-container .disabled{visibility:hidden}

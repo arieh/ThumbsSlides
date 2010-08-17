@@ -1,58 +1,7 @@
-ul.thumbs-list{
-	margin:0;
-	padding:0;
-	list-style-type:none;
-	z-index:50;
-	position:absolute;
-	top:0;
-	padding:0;
-	line-height:72px;
-	background:#aaa;
+.list-container button{height:48px;}
+li.thumb {
+   margin:2px;
+   padding:2px;
+   width:72px;
+   height:72px;
 }
-	li.thumb{
-		float:left;
-		margin:0 2px;
-		width:72px;
-		height:72px;
-		overflow:hidden;
-		text-align:center;
-	}
-	ul.thumbs-list li img{vertical-align:middle;}
-
-ul.thumbs-list.rtl {direction:rtl}
-ul.thumbs-list.rtl li.thumb {float:right}
-
-.list-container{
-	width:572px;
-	height:72px;
-	line-height:72px;
-	overflow:hidden;
-	position:relative;
-	margin:0 auto;
-	vertical-align:middle;
-}
-	.subcontainer{
-		z-index:50;
-		width:532px;
-		float:left;
-		overflow:hidden;
-		height:72px;
-		position:relative
-	}
-	
-	.list-container button{
-		z-index:100;
-		width:20px;
-		height:48px;
-		background:url('buttons.png');
-		border:0;
-		margin-top:12px;
-	}
-	.list-container .rightButton{
-		float:left;background-position:-20px 0;
-	}
-	.list-container .leftButton{
-		float:left;
-	}
-	
-	.list-container .disabled{visibility:hidden}
