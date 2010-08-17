@@ -1,0 +1,61 @@
+.list-container{
+    overflow:hidden;
+    position:relative;
+    margin:0 auto;
+    vertical-align:top;
+    padding:0 20px;
+}
+    
+    .subcontainer{
+        z-index:50;
+        float:left;
+        overflow:hidden;
+        position:relative;
+    }
+    
+    .list-container button{
+        z-index:100;
+        width:20px;
+        background:url('../images/buttons.png');
+        border:0;
+        position:absolute;
+    }
+    
+    
+    
+    .list-container .rightButton{
+        background-position:-20px 0;
+        right:0;
+    }
+    .list-container .leftButton{
+       left:0
+    }
+    
+    .list-container .disabled{visibility:hidden}
+    
+    
+   
+ul.thumbs-list{
+    margin:0;
+    padding:0;
+    list-style-type:none;
+    z-index:50;
+    position:absolute;
+    top:0;
+    padding:0;
+    overflow:auto;
+    vertical-align:top;
+}
+    li.thumb{
+        float:left;
+        overflow:hidden;
+        text-align:center;
+        vertical-align:top;
+    }
+    
+    
+    ul.thumbs-list li img{vertical-align:top;}
+    
+    
+ul.thumbs-list.rtl {direction:rtl}
+ul.thumbs-list.rtl li.thumb {float:right}

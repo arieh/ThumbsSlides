@@ -1,0 +1,10 @@
+.list-container button{height:48px;}
+li.thumb {
+   margin:2px;
+   padding:2px;
+   width:64px;
+   height:64px;
+}
+li.thumb.current {background:#ff0;}
+
+thumbs-list {background:#aaa;}
