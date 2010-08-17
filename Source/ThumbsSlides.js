@@ -35,8 +35,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE 
 */
-(function($,undef){
-ThumbsSlides = new Class({
+(function(window,$,undef){
+window['ThumbsSlides'] = new Class({
 	Implements : [Options, Events],
 	options : {
 		parent : document.body //what is the list parent (default to body)
@@ -46,27 +46,30 @@ ThumbsSlides = new Class({
 		, anchorClasses : '' //class name to add for the anchors
 		, rtl :false // is the list in rtl mode?
         , listClass : 'thumbs-list' //the class of the thumbs list
+        , itemsPerRow : 4
 	}
 	, thumbsList :null //thumbs list element 
 	, dir : 'right' //list direction
 	, list_width : 0 //total list width
-	
-	/* widget elemet pointers */
-    , subContainer : $empty
-	, rightButton : $empty
-	, leftButton : $empty
-	, buttonsSize : $empty
-	, containerSize : $empty
-	, ongoing : false //whether an effect is currently playing
+    , ongoing : false //whether an effect is currently playing
     , first : true //whether the viewport is at the beggining of the list
-	, last : false //whether the viewport is at the end of the list
-	, rowWidth : 0 //the width of the viewport
-	, fx : $empty //the sliding effect object
+    , last : false //whether the viewport is at the end of the list
+    , rowWidth : 0 //the width of the viewport
+    , fx : $empty //the sliding effect object
     , itemsPerRow : 0 //how many items are viewed per viewport
     , itemCollection : [] //a list of all the items in the list
     , current : 0 //current item counter
     , viewport : 0 //first item in the viewport
     , itemWidth : 0 //width of a single item
+    
+	/* 
+	 * Widget elemnet pointers
+	 */
+    , subContainer : $empty
+	, rightButton : $empty
+	, leftButton : $empty
+	, buttonsSize : $empty
+	, containerSize : $empty
     /**
      * @param {Object | Element} the list to create the widget from. Can be an JSON object or an item list
      * @param {Object} a set of options for the constrcutor
@@ -103,18 +106,6 @@ ThumbsSlides = new Class({
 		this.container = new Element('div',{'class':'list-container'});
 		$$('body')[0].adopt(this.subContainer);
 		
-		var old_margin = this.subContainer.getStyle('margin-left');
-		
-		this.subContainer.setStyles({
-			'margin-left':-9999
-		});
-		
-		this.rowWidth = this.subContainer.getSize().x.toInt();
-		
-		this.subContainer.setStyles({
-			'margin-left':old_margin
-		});
-
 		this.container.adopt(this.leftButton,this.subContainer,this.rightButton).setStyle('visibility','hidden');
 
 		this.thumbsList = new Element('ul',{'class':this.options.listClass}).setStyle(this.dir,0);
@@ -195,7 +186,7 @@ ThumbsSlides = new Class({
 	 */
 	, setDimentions : function(){
 		var temp = false
-			, clone;
+			, clone, styles;
 		
         
         if (this.options.useItemClass){
@@ -214,21 +205,41 @@ ThumbsSlides = new Class({
         
 		this.itemWidth = itemSize.totalWidth;
 		
+		this.rowWidth = this.itemWidth * this.options.itemsPerRow;
+		
 		clone.destroy();
         
 		if (temp) temp.destroy();
 		
+		styles = {
+            'height':itemSize.totalHeight
+			,'line-height':itemSize.totalHeight			
+		}
+		
 		this.list_width = this.itemCollection.length * this.itemWidth; 
-
-		this.thumbsList.setStyle('width',this.list_width);
         
-		if ( this.list_width <= this.subContainer.getStyle('width').toInt() ){ // if total item count is smaller than viewport width
+		styles['width'] = this.list_width;
+		this.thumbsList.setStyles(styles);
+        
+		styles['width'] = this.rowWidth;
+		this.subContainer.setStyles(styles);
+		this.container.setStyles(styles);
+        
+		styles = {
+		  top : -1 * this.rightButton.getStyle('height').toInt()/2
+		  , 'margin-top' : itemSize.totalHeight/2	
+		}
+
+		this.rightButton.setStyles(styles);
+		this.leftButton.setStyles(styles);
+		
+		if ( this.itemCollection.length <= this.options.itemsPerRow ){ // if total item count is smaller than viewport width
             this[(this.options.rtl ? 'left':'right') +'Button'].addClass('disabled').set('disabled','disabled');
         } 
 		
 		this[(this.options.rtl ? 'right':'left') +'Button'].addClass('disabled').set('disabled','disabled');
         
-        this.itemsPerRow = Math.round(this.rowWidth/this.itemWidth,10);
+        this.itemsPerRow = this.options.itemsPerRow;
        
 	}
 	/**
@@ -354,4 +365,4 @@ ThumbsSlides = new Class({
 	 */
 	, toElement : function(){return this.container;}
 });
-}(document.id));
+}(this,document.id));
