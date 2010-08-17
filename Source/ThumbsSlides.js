@@ -39,6 +39,11 @@ THE SOFTWARE
 window['ThumbsSlides'] = new Class({
 	Implements : [Options, Events],
 	options : {
+		/*
+		 * onComplete : $empty
+		 * onNextComplete : $empty
+		 * omPrevComplete : $empty
+		 */
 		parent : document.body //what is the list parent (default to body)
 		, movement : false       //how many tiles to move (deafult is to list visible width)
 		, itemClass : 'thumb'   //what is the class of the list items 
