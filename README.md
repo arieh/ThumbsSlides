@@ -20,6 +20,7 @@ In case you want to write up your own class, these are the must have classes:
   * 'subcontainer' : the element that will parent the list itself - *This Element's width will be the carrusell's width - so set it!*
   * 'rightButton' : the 'next' button
   * 'leftButton' : the 'previous' button
+  * 'current' : the current selected thumb
   
 The class can work in 2 different scenarios:
 

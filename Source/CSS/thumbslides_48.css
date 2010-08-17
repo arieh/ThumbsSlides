@@ -21,6 +21,9 @@ ul.thumbs-list{
 	
 	ul.thumbs-list li img{vertical-align:middle;}
 
+ul.thumbs-list.rtl {direction:rtl}
+ul.thumbs-list.rtl li.thumb {float:right}
+
 .list-container{
 	width:404px;
 	height:48px;

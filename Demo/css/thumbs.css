@@ -6,34 +6,41 @@ ul.thumbs-list{
 	position:absolute;
 	top:0;
 	padding:0;
-	line-height:64px;
+	line-height:72px;
 	background:#aaa;
 	overflow:auto;
+        vertical-align:top;
 }
 	li.thumb{
 		float:left;
-		margin:0 2px;
+		margin:2px;
+        padding:2px;
 		width:64px;
 		height:64px;
 		overflow:hidden;
 		text-align:center;
+        vertical-align:top;
 	}
-	ul.thumbs-list li img{vertical-align:middle;}
+	ul.thumbs-list li img{vertical-align:top;}
+.thumb a {line-height:64px; margin:0; padding:0 ;height:64px;display:inline-block; vertical-align:top}
+ul.thumbs-list.rtl {direction:rtl}
+ul.thumbs-list.rtl li.thumb {float:right}
+
 .list-container{
-	width:516px;
-	height:64px;
-	line-height:64px;
+	width:544px;
+	height:72px;
+	line-height:72px;
 	overflow:hidden;
 	position:relative;
 	margin:0 auto;
-	vertical-align:middle;
+	vertical-align:top;
 }
 	.subcontainer{
 		z-index:50;
-		width:476px;
+		width:504px;
 		float:left;
 		overflow:hidden;
-		height:64px;
+		height:72px;
 		position:relative;
 	}
 	
@@ -53,3 +60,5 @@ ul.thumbs-list{
 	}
 	
 	.list-container .disabled{visibility:hidden}
+    
+   li.thumb.current {background:#ff0;}

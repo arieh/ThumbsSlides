@@ -18,6 +18,10 @@ ul.thumbs-list{
 		text-align:center;
 	}
 	ul.thumbs-list li img{vertical-align:middle;}
+
+ul.thumbs-list.rtl {direction:rtl}
+ul.thumbs-list.rtl li.thumb {float:right}
+
 .list-container{
 	width:516px;
 	height:64px;

@@ -35,58 +35,74 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE 
 */
-(function($){
+(function($,undef){
 ThumbsSlides = new Class({
 	Implements : [Options, Events],
-	list : $empty,
-	listClass : ['thumbs-list'],
 	options : {
-		thumbSize : 48,         //what is the thumbnail size
-		parent : document.body, //what is the list parent (default to body)
-		movement : false,       //how many tiles to move (deafult is to list visible width)
-		itemClass : 'thumb',    //what is the class of the list items 
-		useItemClass : true,     //whether or not to use the itemClass to calculate list-items dimentions (false is very resource-expensive),
-		anchorClasses : '' //class name to add for the anchors
-		,rtl :false
-	},
-	thumbsList :$empty,
-	dir : 'right',
-	liMargins : 4,
-	list_width : 0,
-	subContainer : $empty,
-	rightButton : $empty,
-	leftButton : $empty,
-	buttonsSize : $empty,
-	containerSize : $empty,
-	ongoing : false,
-	last : false,
-	rowWidht : 0,
-	moving:false,
-	fx : $empty,
-	initialize : function(list,options){
+		parent : document.body //what is the list parent (default to body)
+		, movement : false       //how many tiles to move (deafult is to list visible width)
+		, itemClass : 'thumb'   //what is the class of the list items 
+		, useItemClass : true     //whether or not to use the itemClass to calculate list-items dimentions (false is very resource-expensive),
+		, anchorClasses : '' //class name to add for the anchors
+		, rtl :false // is the list in rtl mode?
+        , listClass : 'thumbs-list' //the class of the thumbs list
+	}
+	, thumbsList :null //thumbs list element 
+	, dir : 'right' //list direction
+	, list_width : 0 //total list width
+	
+	/* widget elemet pointers */
+    , subContainer : $empty
+	, rightButton : $empty
+	, leftButton : $empty
+	, buttonsSize : $empty
+	, containerSize : $empty
+	, ongoing : false //whether an effect is currently playing
+    , first : true //whether the viewport is at the beggining of the list
+	, last : false //whether the viewport is at the end of the list
+	, rowWidth : 0 //the width of the viewport
+	, fx : $empty //the sliding effect object
+    , itemsPerRow : 0 //how many items are viewed per viewport
+    , itemCollection : [] //a list of all the items in the list
+    , current : 0 //current item counter
+    , viewport : 0 //first item in the viewport
+    , itemWidth : 0 //width of a single item
+    /**
+     * @param {Object | Element} the list to create the widget from. Can be an JSON object or an item list
+     * @param {Object} a set of options for the constrcutor
+     */
+    , initialize : function(list,options){
 		this.setOptions(options);
 		this.dir = this.options.rtl ? 'right' : 'left';
 		
-		this.setBox();
+		this.generateControlls();
 		
 		if ($type( document.id(list))=== 'element'){
-			this.list=list;
-			this.generateBox();
+			this.generateFromElement(list);
 		}
 		else this.generateFromJSON(list);
 
 		this.setDimentions();
 		this.setEvents();
+        
+        if (this.options.rtl) this.thumbsList.addClass('rtl');
+        
+        this.setCurrent(this.current);
+        
 		this.options.parent.adopt(this.container);
 		
 		this.fireEvent('complete');
-	},
-	setBox : function(){		
+	}
+	/**
+	 * generates the basic layout and controller for the widget
+	 */
+	, generateControlls : function(){		
 		this.subContainer = new Element('div',{'class':'subcontainer'});
 		this.leftButton = new Element('button',{'class':'leftButton'});
 		this.rightButton = new Element('button',{'class':'rightButton'});
 		this.container = new Element('div',{'class':'list-container'});
 		$$('body')[0].adopt(this.subContainer);
+		
 		var old_margin = this.subContainer.getStyle('margin-left');
 		
 		this.subContainer.setStyles({
@@ -101,79 +117,36 @@ ThumbsSlides = new Class({
 
 		this.container.adopt(this.leftButton,this.subContainer,this.rightButton).setStyle('visibility','hidden');
 
-		this.thumbsList = new Element('ul',{'class':this.listClass}).setStyle(this.dir,0);
+		this.thumbsList = new Element('ul',{'class':this.options.listClass}).setStyle(this.dir,0);
 		this.buttonsSize = this.leftButton.getSize();
 		this.containerSize = this.container.getSize();
 		
 		this.subContainer.adopt(this.thumbsList);
-	},
-	generateBox : function(){
-		var $this = this,
-			lis = this.list.getElements('li'),
-			subContainer = this.subContainer;
+	}
+	/**
+	 * generates the thumbs-list form an element
+	 * @param {Element} list
+	 */
+	, generateFromElement : function(list){
+		var lis = list.getElements('li');
 		
 		if (this.options.parent === $empty)
-			this.options.parent = this.list.getParent();
+			this.options.parent = list.getParent();
 		
 		lis.each(function(li){
-			var a = li.getElements('a')[0], 
-				img = a.getElements('img')[0],
-				targetImage = a.get('href'),
-				desc = img.get('alt');
+			var a = li.getElements('a')[0];
+            
 			$this.thumbsList.adopt(li.adopt(a));
 		});
 
-		this.list.destroy();
-	},
-	setEvents : function(){
-		var $this=this,
-			rightButton = this.rightButton,
-			leftButton = this.leftButton,
-			subContainer = this.subContrainer;
-			
-		this.fx = new Fx.Tween(this.thumbsList);
-		this.fx.addEvent('complete',function(){$this.ongoing=false;});
-		
-		rightButton.addEvent('click',function(){
-			$this[$this.options.rtl ? 'prev' : 'next']($this.options.movement);
-		});
-		
-		leftButton.addEvent('click',function(){
-			$this[$this.options.rtl ? 'next' : 'prev']($this.options.movement);
-		});
-		
-		$this.container.setStyle('visibility','visible');
-	},
-	setDimentions : function(){
-		var $this = this,
-			lis = this.container.getElements(this.options.usetItemClass ? '.'+this.options.itemClass : 'li'),
-			temp = false,
-			clone;
-		if (this.options.useItemClass){
-			 clone = new Element('li',{'class':this.options.itemClass});
-			 clone.setStyle('left',-9999);
-			 $$('body')[0].adopt(clone);
-		}else{
-			clone = this.container.clone();
-			clone.setStyle('left',-9999);
-			$$('body')[0].adopt(clone);
-			temp = clone;
-			clone = clone.getElement('li');
-		}
-		
-		$this.liMargins = clone.getStyle('margin-right').toInt()+clone.getStyle('margin-left').toInt();
-		
-		clone.destroy();
-		if (temp) temp.destroy();
-		
-		this.list_width = lis.length * ($this.options.thumbSize + $this.liMargins ); 
-		
-		$this.thumbsList.setStyle('width',this.list_width);
-		if ( this.list_width <= this.subContainer.getStyle('width').toInt() ) this[(this.options.rtl ? 'left':'right') +'Button'].addClass('disabled').set('disabled','disabled');
-		
-		this[(this.options.rtl ? 'right':'left') +'Button'].addClass('disabled').set('disabled','disabled');
-	},
-	generateFromJSON : function(json){
+		list.destroy();
+        this.itemCollection = this.thumbsList.getChildren('li');
+	}
+	/**
+	 * generates the thumbs-list from a JSON object
+	 * @param {Object} json
+	 */
+	, generateFromJSON : function(json){
 		var $this = this;
 		json.each(function(jsn){
 			var li = new Element('li', {'class': 'thumb'}),
@@ -188,84 +161,197 @@ ThumbsSlides = new Class({
 			li.adopt(a.adopt(img));
 			$this.thumbsList.adopt(li);
 		});
-	},
-	next : function(thumb_number){
-		if (this.ongoing){
-			return;
+        this.itemCollection = this.thumbsList.getChildren('li');
+	}
+	/**
+	 * sets the various events related to the object
+	 */
+	, setEvents : function(){
+		var $this=this,
+			rightButton = this.rightButton,
+			leftButton = this.leftButton;
+        
+		this.fx = new Fx.Tween(this.thumbsList);
+		this.fx.addEvent('complete',function(){$this.ongoing=false;});
+		
+		rightButton.addEvent('click',function(){
+			$this[$this.options.rtl ? 'prev' : 'next']($this.options.movement || $this.itemsPerRow);
+		});
+		
+		leftButton.addEvent('click',function(){
+			$this[$this.options.rtl ? 'next' : 'prev']($this.options.movement || $this.itemsPerRow);
+		});
+		
+		$this.container.setStyle('visibility','visible');
+        
+        this.thumbsList.addEvent('click',function(e){
+                e = e || $(window.event);
+                
+                if (e.target.match('img')) $this.setCurrent($this.itemCollection.indexOf(e.target.getParent('.thumb')));
+        });
+	}
+	/**
+	 * initializes the dimensions of all widget elements
+	 */
+	, setDimentions : function(){
+		var temp = false
+			, clone;
+		
+        
+        if (this.options.useItemClass){
+			clone = new Element('li',{'class':this.options.itemClass});
+			clone.setStyle('left',-9999);
+			$$('body')[0].adopt(clone);
+		}else{
+			clone = this.container.clone();
+			clone.setStyle('left',-9999);
+			$$('body')[0].adopt(clone);
+			temp = clone;
+			clone = clone.getElement('li');
 		}
 		
-		var $this=this, 
-			width_dif = this.list_width % $this.rowWidth + ($this.options.thumbSize + $this.liMargins),
-			dir = $this.thumbsList.getStyle(this.dir).toInt(), 
-			size = $this.thumbsList.getSize(),
-			movement = (dir-this.rowWidth-width_dif<=-1*(size.x)) ? $this.rowWidth - width_dif : $this.rowWidth
+        itemSize= clone.getComputedSize({styles:['padding','border','margin']});
+        
+		this.itemWidth = itemSize.totalWidth;
+		
+		clone.destroy();
+        
+		if (temp) temp.destroy();
+		
+		this.list_width = this.itemCollection.length * this.itemWidth; 
+
+		this.thumbsList.setStyle('width',this.list_width);
+        
+		if ( this.list_width <= this.subContainer.getStyle('width').toInt() ){ // if total item count is smaller than viewport width
+            this[(this.options.rtl ? 'left':'right') +'Button'].addClass('disabled').set('disabled','disabled');
+        } 
+		
+		this[(this.options.rtl ? 'right':'left') +'Button'].addClass('disabled').set('disabled','disabled');
+        
+        this.itemsPerRow = Math.round(this.rowWidth/this.itemWidth,10);
+       
+	}
+	/**
+	 * moves the vieport farwasrd
+	 * @param {int} thumb_number if supplied, will set how many items wil the viewport move
+	 * @return this  
+	 */
+	, next : function(thumb_number){
+		if (this.ongoing){
+			return this;
+		}
+		
+        thumb_number = thumb_number || (this.options.movement || this.itemsPerRow);
+        
+		var $this=this
+			, dir = $this.thumbsList.getStyle(this.dir).toInt()
 			, prevButton = this.options.rtl ? this.rightButton : this.leftButton
 			, nextButton = this.options.rtl ? this.leftButton : this.rightButton
 			, completeFunc = function(){				
 					$this.fireEvent('nextComplete');
 					$this.fx.removeEvent('complete',completeFunc);
-			};
-		
-		if (thumb_number){
-			movement = ((this.options.thumbSize + this.liMargins) * thumb_number);
-			if (dir-movement<-1*size.x+this.rowWidth){
-				movement = size.x-this.rowWidth+dir;
 			}
-		}
-		
-		if (dir>-1*(size.x-$this.rowWidth)){
-			this.ongoing = true;
-			
+            , list_len = this.itemCollection.length
+            , stop = list_len - this.itemsPerRow
+            , movement, diff;
+            
+        if (this.viewport + thumb_number > stop){
+            diff = stop - this.viewport;
+            thumb_number = (thumb_number<diff) ? thumb_number : diff;
+        }    
+        
+        movement = (this.itemWidth * thumb_number);
+        
+		if (false === this.last){
+			this.viewport += thumb_number;
+            this.ongoing = true;
 			this.fx.addEvent('complete',completeFunc);
 			this.fx.start(this.dir,dir-movement);
 				
 			if (prevButton.get('disabled')) prevButton.removeClass('disabled').removeAttribute('disabled');
-			
-			if (movement<$this.rowWidth && !(thumb_number)){
-				$this.last = true;
+            if (this.first) this.first = false;
+            
+			if (this.viewport >= stop){
+				this.last = true;
 				nextButton.set('disabled','disabled').addClass('disabled');
 			}
 		}
-	},
-	prev : function(thumb_number){
-		if (this.ongoing) return;
-		var $this=this, 
-			width_dif = this.list_width % $this.rowWidth + ($this.options.thumbSize + $this.liMargins),
-			dir = $this.thumbsList.getStyle(this.dir).toInt(), 
-			size = $this.thumbsList.getSize(),
-			movement = ($this.last) ? $this.rowWidth-width_dif : $this.rowWidth
+		return this;
+	}
+    /**
+     * moves the vieport backwards
+     * @param {int} thumb_number if supplied, will set how many items wil the viewport move
+     * @return this  
+     */
+	, prev : function(thumb_number){
+		if (this.ongoing) return this;
+		
+        
+        thumb_number = thumb_number || (this.options.movement || this.itemsPerRow);
+        
+        var $this=this
+			, dir = this.thumbsList.getStyle(this.dir).toInt()
 			, prevButton = this.options.rtl ? this.rightButton : this.leftButton
 			, nextButton = this.options.rtl ? this.leftButton : this.rightButton
 			, completeFunc = function(){				
 					$this.fireEvent('prevComplete');
 					$this.fx.removeEvent('complete',completeFunc);
-			};
-			
-		if (thumb_number){
-			movement = ((this.options.thumbSize + this.liMargins) * thumb_number);
-			
-			if (dir+movement>0){
-				movement = movement-(dir+movement);
 			}
-		}else if(dir+movement>0){
-			$this.last = true;
-			movement = movement-(dir+movement);
-		}
-
-		if (dir<0){
-			this.ongoing = true;
+            , movement;
 			
+		if (this.viewport - thumb_number < 0){
+            thumb_number = this.viewport;    
+		}
+        
+        movement = ((this.itemWidth) * thumb_number);
+        
+		if (false === this.first){
+			this.ongoing = true;
+            this.viewport -= thumb_number;
+            
 			this.fx.addEvent('complete',completeFunc);
 			this.fx.start(this.dir,dir+movement);
 			
 			if (nextButton.get('disabled')) nextButton.removeClass('disabled').removeAttribute('disabled');
 			if (this.last) this.last = false;
 			
-			if (dir+movement==this.buttonsSize.x){
+			if (this.viewport ==0){
 				prevButton.set('disabled','disabled').addClass('disabled');
+                this.first = true;
 			}
 		}
-	},
-	toElement : function(){return this.container;}
+        return this;
+	}
+	/**
+	 * sets the current selected thumb
+	 * @param {int} i the location of the item in the thumbs collection
+	 */
+    , setCurrent : function(i){
+        this.itemCollection[this.current].removeClass('current');
+        this.itemCollection[i].addClass('current');
+        this.current = i;
+    }
+	/**
+	 * moved the current selected item to the next item
+	 */
+    , nextItem : function(){
+        if (this.current == this.itemCollection.length-1) return;
+        this.setCurrent(this.current +1);
+        
+        if (this.current >= this.viewport + this.itemsPerRow) this.next();
+    }
+    /**
+     * moved the previous selected item to the next item
+     */
+    , prevItem : function(){
+        if (this.current == 0) return;
+        this.setCurrent(this.current -1);
+        if (this.current < this.viewport)  this.prev();
+    }
+	/**
+	 * Mootools Accessor
+	 * @return Element the list container
+	 */
+	, toElement : function(){return this.container;}
 });
 }(document.id));
