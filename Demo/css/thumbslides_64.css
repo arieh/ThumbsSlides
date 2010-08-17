@@ -5,3 +5,6 @@ li.thumb {
    width:64px;
    height:64px;
 }
+li.thumb.current {background:#ff0;}
+
+thumbs-list {background:#aaa;}

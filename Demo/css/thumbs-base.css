@@ -33,7 +33,7 @@
     
     .list-container .disabled{visibility:hidden}
     
-    li.thumb.current {background:#ff0;}
+    
    
 ul.thumbs-list{
     margin:0;
@@ -43,7 +43,6 @@ ul.thumbs-list{
     position:absolute;
     top:0;
     padding:0;
-    background:#aaa;
     overflow:auto;
     vertical-align:top;
 }
