@@ -19,9 +19,9 @@
         background:url('../images/buttons.png');
         border:0;
         position:absolute;
+        top:-50%;
+        margin-top:48px;
     }
-    
-    
     
     .list-container .rightButton{
         background-position:-20px 0;
@@ -43,7 +43,7 @@ ul.thumbs-list{
     position:absolute;
     top:0;
     padding:0;
-    overflow:auto;
+    overflow:visible;
     vertical-align:top;
 }
     li.thumb{

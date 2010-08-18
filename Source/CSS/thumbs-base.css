@@ -19,6 +19,8 @@
         background:url('../images/buttons.png');
         border:0;
         position:absolute;
+        top:-50%;
+        margin-top:48px;
     }
     
     .list-container .rightButton{
