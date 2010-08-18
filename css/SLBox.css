@@ -1,0 +1,35 @@
+.modal {
+	position:absolute; 
+	z-index:450; 
+	background:#000; 
+	opacity:0.5; 
+	top:0; 
+	right:0; 
+	filter: alpha(opacity=50);-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+}
+.loader {position:absolute; z-index:455}
+.lightbox{
+    padding:20px;
+    margin:20px;
+    border:2px solid;
+    position:absolute;
+    z-index:500;
+    background:#fff;
+}
+.lightbox img {display:block;}
+.lightbox ul {text-align:center; padding:0; margin:10px 0 0; border:0; width:100%;height:20px;}
+.lightbox li {display:inline; font-size:70%;border-left:1px solid #aaa;}
+.lightbox li a {margin:0 5px;}
+.lightbox li.first {border:0}
+.lightbox .hidden {display:none}
+
+.lightbox .close{
+    display:block;
+    position:absolute;
+    height:24px;
+    width:24px;
+    z-index:550;
+    cursor:pointer;
+    top:-8px;
+    right:-8px;
+}
