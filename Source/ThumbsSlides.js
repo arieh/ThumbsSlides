@@ -8,7 +8,7 @@ authors:
 - Arieh Glazer
 
 requires:
-- core/1.2.4: [Class, Class.Extras, Element, Element.Event, Element.Style, Element.Dimensions, Selectors, Fx.Tween]
+- core/1.3: [Class, Class.Extras, Element, Element.Event, Element.Style, Element.Dimensions, Selectors, Fx.Tween]
 
 provides: [ThumbsSlides]
 
@@ -35,7 +35,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE 
 */
-(function(window,$,undef){
+(function(window,$,$empty,undef){
 window['ThumbsSlides'] = new Class({
     Implements : [Options, Events],
     options : {
@@ -70,11 +70,11 @@ window['ThumbsSlides'] = new Class({
     /* 
      * Widget elemnet pointers
      */
-    , subContainer : $empty
-    , rightButton : $empty
-    , leftButton : $empty
-    , buttonsSize : $empty
-    , containerSize : $empty
+    , subContainer : null
+    , rightButton : null
+    , leftButton : null
+    , buttonsSize : null
+    , containerSize : null
     /**
      * @param {Object | Element} the list to create the widget from. Can be an JSON object or an item list
      * @param {Object} a set of options for the constrcutor
@@ -85,7 +85,7 @@ window['ThumbsSlides'] = new Class({
         
         this.generateControlls();
         
-        if ($type( document.id(list))=== 'element'){
+        if (typeOf( document.id(list))=== 'element'){
             this.generateFromElement(list);
         }
         else this.generateFromJSON(list);
@@ -362,4 +362,4 @@ window['ThumbsSlides'] = new Class({
      */
     , toElement : function(){return this.container;}
 });
-}(this,document.id));
+}(this,document.id,Function.create()));
